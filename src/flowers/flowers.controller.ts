@@ -1,6 +1,8 @@
 import {
+	Body,
 	Controller,
 	Get,
+	Post,
 	Query,
 	UseGuards,
 	UseInterceptors,
@@ -8,6 +10,7 @@ import {
 import { AuthGuard } from 'src/conception/guard';
 import { LoggingInterceptor } from 'src/conception/interceptor';
 import { ParseIntPipe } from 'src/conception/pipe';
+import { CreateFlowersDto } from './dto/flowers.dto';
 import { FlowersService } from './flowers.service';
 
 @Controller('flowers')
@@ -15,7 +18,7 @@ import { FlowersService } from './flowers.service';
 export class FlowersController {
 	constructor(private readonly flowersService: FlowersService) {}
 
-	@Get('')
+	@Get()
 	@UseGuards(AuthGuard)
 	findAll() {
 		return this.flowersService.findAll();
@@ -25,5 +28,11 @@ export class FlowersController {
 	findAllWithQuery(@Query('pageNumber', ParseIntPipe) pageNumber: number) {
 		console.log('Query:', pageNumber);
 		return this.flowersService.findAll();
+	}
+
+	@Post('create')
+	@UseGuards(AuthGuard)
+	create(@Body() dto: CreateFlowersDto) {
+		return this.flowersService.create(dto);
 	}
 }
