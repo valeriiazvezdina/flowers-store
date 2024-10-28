@@ -1,9 +1,15 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { LoggerMiddleware } from './conception/middleware';
 import { FlowersModule } from './flowers/flowers.module';
 
 @Module({
-	imports: [FlowersModule],
+	imports: [
+		ConfigModule.forRoot({
+			isGlobal: true,
+		}),
+		FlowersModule,
+	],
 })
 export class AppModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
