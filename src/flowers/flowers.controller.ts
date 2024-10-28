@@ -1,7 +1,29 @@
-import { Controller } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	Query,
+	UseGuards,
+	UseInterceptors,
+} from '@nestjs/common';
+import { AuthGuard } from 'src/conception/guard';
+import { LoggingInterceptor } from 'src/conception/interceptor';
+import { ParseIntPipe } from 'src/conception/pipe';
 import { FlowersService } from './flowers.service';
 
 @Controller('flowers')
+@UseInterceptors(LoggingInterceptor)
 export class FlowersController {
-  constructor(private readonly flowersService: FlowersService) {}
+	constructor(private readonly flowersService: FlowersService) {}
+
+	@Get('')
+	@UseGuards(AuthGuard)
+	findAll() {
+		return this.flowersService.findAll();
+	}
+
+	@Get('pipe')
+	findAllWithQuery(@Query('pageNumber', ParseIntPipe) pageNumber: number) {
+		console.log('Query:', pageNumber);
+		return this.flowersService.findAll();
+	}
 }
