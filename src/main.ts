@@ -8,6 +8,7 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	app.setGlobalPrefix('api');
 	app.useGlobalPipes(new ValidationPipe());
+
 	await app.listen(3000);
 	console.log('backend is running on port 3000...');
 
@@ -16,6 +17,7 @@ async function bootstrap() {
 			transport: Transport.TCP,
 			options: MicroserviceHostPort,
 		});
+
 	await microservice.listen();
 	console.log('microservice is running on port 8877...');
 }

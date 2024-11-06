@@ -7,5 +7,6 @@ import { FlowersService } from './flowers.service';
 @Module({
 	controllers: [FlowersController],
 	providers: [FlowersService, PrismaService, ConfigService],
+	exports: [FlowersService],
 })
 export class FlowersModule {}
